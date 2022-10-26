@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->string('date_hired')->nullable();
+            $table->string('id_number')->default("NA")->nullable();
             $table->timestamps();
         });
     }
