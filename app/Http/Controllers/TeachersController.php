@@ -122,6 +122,9 @@ class TeachersController extends Controller
             User::where(['teacher_id' => $request->id])->update([
                 'address_id' => $addresses->id,
             ]);
+            Addresses::where(['id' => $addresses->id])->update([
+                'user_id' => $request->userDetails['id'],
+            ]);
         }
 
         User::where(['teacher_id' => $request->id])->update([
