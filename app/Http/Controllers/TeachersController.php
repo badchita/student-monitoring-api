@@ -9,9 +9,6 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
-
 class TeachersController extends Controller
 {
     private $status = 200;

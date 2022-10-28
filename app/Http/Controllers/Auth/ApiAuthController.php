@@ -81,12 +81,51 @@ class ApiAuthController
         }
     }
 
-    public function login (Request $request) {
+    public function loginAdmin (Request $request) {
         if ($request->email == '') {
             $user = User::where('email', $request->email)->first();
         }
         $user = User::where('email', $request->email)->orwhere('username', $request->username)->first();
         if ($user) {
+            if ($user->user_type !== 'admin') {
+                $response = ["message" => "This Account does not have access to this site. Please Login as Admin"];
+                return response($response, 403);
+            }
+            if (Hash::check($request->password, $user->password)) {
+                $is_email_verified = $user->is_email_verified;
+                if ($is_email_verified == 0) {
+                    $response = ["message" => "Email Not Verified!"];
+                    return response($response, 402);
+                } else {
+                    $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+                    $response = [
+                        'remember_token' => $user->remember_token,
+                        'token'          => $token,
+                        'id'             => $user->id,
+                        'status' => 200
+                    ];
+                return response($response, 200);
+                }
+            } else {
+                $response = ["message" => "Password mismatch"];
+                return response($response, 422);
+            }
+        } else {
+            $response = ["message" =>'User does not exist'];
+            return response($response, 422);
+        }
+    }
+
+    public function loginTeacher (Request $request) {
+        if ($request->email == '') {
+            $user = User::where('email', $request->email)->first();
+        }
+        $user = User::where('email', $request->email)->orwhere('username', $request->username)->first();
+        if ($user) {
+            if ($user->user_type !== 'teacher') {
+                $response = ["message" => "This Account does not have access to this site. Please Login as Teacher"];
+                return response($response, 403);
+            }
             if (Hash::check($request->password, $user->password)) {
                 $is_email_verified = $user->is_email_verified;
                 if ($is_email_verified == 0) {

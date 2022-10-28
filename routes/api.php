@@ -22,7 +22,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::group(['middleware' => ['cors', 'json.response']], function () {
-    Route::post('/login', [ApiAuthController::class, 'login'])->name('login');
+    Route::post('teacher/login', [ApiAuthController::class, 'loginTeacher'])->name('auth.loginTeacher');
+    Route::post('admin/login', [ApiAuthController::class, 'loginAdmin'])->name('auth.loginAdmin');
     Route::post('/register',[ApiAuthController::class, 'register'])->name('register');
 
     Route::middleware('auth:api')->group(function () {
