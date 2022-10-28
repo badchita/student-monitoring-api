@@ -7,6 +7,7 @@ use App\Http\Controllers\ProvincesController;
 use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\SubjectsController;
 use App\Http\Controllers\TeachersController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,6 +39,8 @@ Route::get('account/verify/{token}', [ApiAuthController::class, 'verifyAccount']
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/user/details/{id}',[UsersController::class, 'show'])->name('user.show');
 
 Route::post('/teacher/detail/save',[TeachersController::class, 'store'])->name('teacher.store');
 Route::put('/teacher/detail/update',[TeachersController::class, 'update'])->name('teacher.update');
