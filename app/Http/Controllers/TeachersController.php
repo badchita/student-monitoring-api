@@ -60,6 +60,7 @@ class TeachersController extends Controller
             $users->date_of_birth = $request->userDetails['dateOfBirth'];
             $users->date_of_joined = $request->userDetails['dateOfJoined'];
             $users->age = $request->userDetails['age'];
+            $users->gender = $request->userDetails['gender'];
             $users->status = 'V';
             $users->user_type = 'teacher';
             $users->teacher_id = $teachers->id;
@@ -134,8 +135,8 @@ class TeachersController extends Controller
             'mobile' => $request->userDetails['mobile'],
             'date_of_birth' => $request->userDetails['dateOfBirth'],
             'age' => $request->userDetails['age'],
+            'gender' => $request->userDetails['gender'],
         ]);
-
 
         $response = [
             'message' => 'Teacher Information Saved',

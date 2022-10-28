@@ -63,7 +63,9 @@ class StudentsController extends Controller
             $users->email = $request->userDetails['email'];
             $users->mobile = $request->userDetails['mobile'];
             $users->date_of_birth = $request->userDetails['dateOfBirth'];
+            $users->date_of_joined = $request->userDetails['dateOfJoined'];
             $users->age = $request->userDetails['age'];
+            $users->gender = $request->userDetails['gender'];
             $users->status = 'V';
             $users->user_type = 'student';
             $users->children_id = $students->id;
@@ -140,6 +142,7 @@ class StudentsController extends Controller
             'mobile' => $request->userDetails['mobile'],
             'date_of_birth' => $request->userDetails['dateOfBirth'],
             'age' => $request->userDetails['age'],
+            'gender' => $request->userDetails['gender'],
         ]);
 
         $response = [

@@ -43,6 +43,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'age',
         'teacher_id',
         'is_email_verified',
+        'gender',
     ];
 
     public function addresses()  {
