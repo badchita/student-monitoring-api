@@ -54,6 +54,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Teachers::class, 'id');
     }
 
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new \App\Notifications\MailResetPasswordNotification($token));
+    }
+
+
     /**
      * The attributes that should be hidden for serialization.
      *

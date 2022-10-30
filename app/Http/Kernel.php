@@ -71,5 +71,7 @@ class Kernel extends HttpKernel
         'cors' => \App\Http\Middleware\Cors::class,
         //EmailVerification
         'is_verify_email' => \App\Http\Middleware\IsVerifyEmail::class,
+        'api.admin' => \App\Http\Middleware\AdminAuth::class,
+        'api.teacher' => \App\Http\Middleware\TeacherAuth::class,
     ];
 }
