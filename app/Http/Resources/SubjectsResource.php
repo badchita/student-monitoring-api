@@ -21,6 +21,7 @@ class SubjectsResource extends JsonResource
             'teacherId' => $this->teacher_id,
             'studentId' => $this->student_id,
             'units' => $this->units,
+            'schedule' => $this->schedule,
         ];
     }
 }

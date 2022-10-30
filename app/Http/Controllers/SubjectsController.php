@@ -37,6 +37,7 @@ class SubjectsController extends Controller
             $subjects->description = $request->description;
             $subjects->code = $request->code;
             $subjects->units = $request->units;
+            $subjects->schedule = $request->schedule;
             $subjects->save();
 
             $response = [
@@ -58,6 +59,7 @@ class SubjectsController extends Controller
             'description' => $request->description,
             'code' => $request->code,
             'units' => $request->units,
+            'schedule' => $request->schedule,
         ]);
         $response = [
             'message' => 'Subject Information Saved',

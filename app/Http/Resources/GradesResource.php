@@ -29,7 +29,8 @@ class GradesResource extends JsonResource
                 'description',
                 'code',
                 'teacher_id as teacherId',
-                'units'
+                'units',
+                'schedule'
             ])->first(),
         ];
     }

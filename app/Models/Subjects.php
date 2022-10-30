@@ -15,7 +15,8 @@ class Subjects extends Model
         'code',
         'teacher_id',
         'student_id',
-        'units'
+        'units',
+        'schedule'
     ];
 
     public function teachers()
