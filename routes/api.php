@@ -40,7 +40,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/user/details/{id}',[UsersController::class, 'show'])->name('user.show');
+Route::get('/user/detail/{id}',[UsersController::class, 'show'])->name('user.show');
+Route::put('/user/detail/update',[UsersController::class, 'update'])->name('user.update');
 
 Route::post('/teacher/detail/save',[TeachersController::class, 'store'])->name('teacher.store');
 Route::put('/teacher/detail/update',[TeachersController::class, 'update'])->name('teacher.update');

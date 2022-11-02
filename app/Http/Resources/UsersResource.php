@@ -32,6 +32,7 @@ class UsersResource extends JsonResource
             'childrenId' => $this->children_id,
             'mobile' => $this->mobile,
             'age' => $this->age,
+            'dateOfBirth' => $this->date_of_birth,
             'teacherId' => $this->teacher_id,
             'addressDetails' => Addresses::where(['user_id' => $this->id])->get([
                 'id',

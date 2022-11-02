@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\UsersResource;
+use App\Models\Addresses;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -14,5 +15,46 @@ class UsersController extends Controller
         $user = User::find($id);
         $data = New UsersResource($user);
         return response($data, $this->status);
+    }
+
+    public function update(Request $request) {
+        User::where(['id' => $request->id])->update([
+            'first_name' => $request->firstName,
+            'last_name' => $request->lastName,
+            'date_of_birth' => $request->dateOfBirth,
+            'age' => $request->age,
+            'gender' => $request->gender,
+        ]);
+
+        if ($request->addressDetails['id']) {
+            Addresses::where(['user_id' => $request->id])->update([
+                'house_no' => $request->addressDetails['houseNo'],
+                'barangay' => $request->addressDetails['barangay'],
+                'country' => $request->addressDetails['country'],
+                'province' => $request->addressDetails['province'],
+                'zip_code' => $request->addressDetails['zipCode'],
+            ]);
+        } else {
+            $addresses = new Addresses();
+            $addresses->house_no = $request->addressDetails['houseNo'];
+            $addresses->barangay = $request->addressDetails['barangay'];
+            $addresses->country = json_encode($request->addressDetails['country']);
+            $addresses->province = json_encode($request->addressDetails['province']);
+            $addresses->city = $request->addressDetails['city'];
+            $addresses->zip_code = $request->addressDetails['zipCode'];
+            $addresses->save();
+            User::where(['id' => $request->id])->update([
+                'address_id' => $addresses->id,
+            ]);
+            Addresses::where(['id' => $addresses->id])->update([
+                'user_id' => $request->id,
+            ]);
+        }
+
+        $response = [
+            'message' => 'User Information Saved',
+            'status' => $this->status
+        ];
+        return response($response, $this->status);
     }
 }

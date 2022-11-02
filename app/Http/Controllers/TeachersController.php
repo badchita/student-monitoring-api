@@ -109,7 +109,7 @@ class TeachersController extends Controller
                 'zip_code' => $request->addressDetails['zipCode'],
             ]);
         } else {
-            $addresses = new Addresses;
+            $addresses = new Addresses();
             $addresses->house_no = $request->addressDetails['houseNo'];
             $addresses->barangay = $request->addressDetails['barangay'];
             $addresses->country = json_encode($request->addressDetails['country']);
