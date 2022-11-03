@@ -34,6 +34,7 @@ class UsersResource extends JsonResource
             'age' => $this->age,
             'dateOfBirth' => $this->date_of_birth,
             'teacherId' => $this->teacher_id,
+            'isEmailVerified' => $this->is_email_verified,
             'addressDetails' => Addresses::where(['user_id' => $this->id])->get([
                 'id',
                 'house_no as houseNo',

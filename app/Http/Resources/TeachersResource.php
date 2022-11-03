@@ -41,7 +41,8 @@ class TeachersResource extends JsonResource
                 'age',
                 'teacher_id as teacherId',
                 'address_id as addressId',
-                'gender'
+                'gender',
+                'is_email_verified as isEmailVerified'
             ])->first(),
             'addressDetails' => Addresses::where(['user_id' => $user->id])->get([
                 'id',

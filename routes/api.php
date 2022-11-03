@@ -26,6 +26,9 @@ Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::post('teacher/login', [ApiAuthController::class, 'loginTeacher'])->name('auth.loginTeacher');
     Route::post('admin/login', [ApiAuthController::class, 'loginAdmin'])->name('auth.loginAdmin');
     Route::post('/register',[ApiAuthController::class, 'register'])->name('register');
+    Route::get('generatePassword', [ApiAuthController::class, 'generatePassword'])->name('auth.generatePassword');
+    Route::post('updatePassword', [ApiAuthController::class, 'updatePasswordByAdmin'])->name('auth.updatePasswordByAdmin');
+    Route::post('sendEmailVerification', [ApiAuthController::class, 'sendEmailVerification'])->name('auth.sendEmailVerification');
 
     Route::middleware('auth:api')->group(function () {
         Route::post('/logout', [ApiAuthController::class, 'logout'])->name('logout.api');

@@ -195,4 +195,44 @@ class ApiAuthController
         $result = json_decode((string) $response->getBody(), true);
         return response()->json($result, $this->successStatus);
     }
+
+    public function generatePassword() {
+        $randomPassword = Str::random(10);
+        return response([
+            'data' => $randomPassword,
+            'status' => $this->status
+        ]);
+    }
+
+    public function updatePasswordByAdmin(Request $request) {
+        $password = $request->password;
+        User::where(['id' => $request->id])->update([
+            'password' => Hash::make($password),
+        ]);
+        Mail::send('email.emailChangePasswordEmail', ['password' => $password], function($message) use($request){
+            $message->to($request->email);
+            $message->subject('Change Password Mail');
+        });
+        return response([
+            'status' => $this->status
+        ]);
+    }
+
+    public function sendEmailVerification(Request $request) {
+        $user = User::where('email', $request->email)->first();
+        $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+        UserVerify::create([
+            'user_id' => $request->id,
+            'token'   => $token
+        ]);
+        Mail::send('email.emailVerificationEmail', ['token' => $token], function($message) use($request){
+            $message->to($request->email);
+            $message->subject('Email Verification Mail');
+        });
+        $response = [
+            'message' => 'Email Sent',
+            'status' => $this->status
+        ];
+        return response($response, $this->status);
+    }
 }
