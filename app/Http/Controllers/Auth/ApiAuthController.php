@@ -169,7 +169,8 @@ class ApiAuthController
                 $verifyUser->user->save();
                 $message = "Your e-mail is verified. You can now login.";
                 $response = ['message' => $message];
-                return Redirect::to('http://localhost:4200/login/teacher');
+                // return Redirect::to('http://localhost:4200/login/teacher');
+                return Redirect::to('https://studentmonitoring.herokuapp.com/login/teacher');
                 // return response($response, 200);
             } else {
                 $message  = "Your e-mail is already verified. You can now login.";

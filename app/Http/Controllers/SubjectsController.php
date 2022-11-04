@@ -14,10 +14,19 @@ class SubjectsController extends Controller
 
     public function list(Request $request) {
         $code = $request->code;
-        $subjects = Subjects::select('*')
-                    ->where('code', 'LIKE', $code . '%')
-                    ->orderBy("created_at", "DESC")
-                    ->get();
+        $teacherId = $request->teacherId;
+        if ($teacherId) {
+            $subjects = Subjects::select('*')
+                        ->where('teacher_id', $teacherId)
+                        ->where('code', 'LIKE', $code . '%')
+                        ->orderBy("created_at", "DESC")
+                        ->get();
+        } else {
+            $subjects = Subjects::select('*')
+                        ->where('code', 'LIKE', $code . '%')
+                        ->orderBy("created_at", "DESC")
+                        ->get();
+        }
         return response([
             'data' => SubjectsResource::collection($subjects),
             'status' => $this->status
