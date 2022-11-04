@@ -24,6 +24,8 @@ class GradesResource extends JsonResource
             'midterm' => $this->midterm,
             'endterm' => $this->endterm,
             'finalGrade' => $this->final_grade,
+            'studentStatus' => $this->student_status,
+            'absent' => $this->absent,
             'subjectDetails' => Subjects::where(['id' =>$this->subject_id])->get([
                 'id',
                 'description',

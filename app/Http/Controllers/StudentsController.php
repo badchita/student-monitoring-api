@@ -21,7 +21,7 @@ class StudentsController extends Controller
                     ->orderBy("created_at", "DESC")
                     ->get();
         return response([
-            'data' => StudentsResource::collection($students),
+            'data' => StudentsResource::collection($students->loadMissing('grades')),
             'status' => $this->status
         ]);
     }

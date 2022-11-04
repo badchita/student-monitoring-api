@@ -18,6 +18,8 @@ class Grades extends Model
         'midterm',
         'endterm',
         'final_grade',
+        'student_status',
+        'absent'
     ];
 
     public function students()

@@ -66,6 +66,8 @@ Route::get('/student/list',[StudentsController::class, 'list'])->name('student.i
 Route::get('/student/generateIdNumber',[StudentsController::class, 'generateIdNumber'])->name('student.generateIdNumber');
 
 Route::get('/grade/list',[GradesController::class, 'list'])->name('grade.list');
+Route::get('/grade/detail/{studentId}/{subjectId}',[GradesController::class, 'show'])->name('grade.show');
+Route::put('/grade/detail/update',[GradesController::class, 'update'])->name('grade.update');
 
 Route::get('/countries',[CountriesController::class, 'getAllCountries'])->name('getAllCountries');
 Route::get('/provinces',[ProvincesController::class, 'getAllProvinces'])->name('getAllProvinces');

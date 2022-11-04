@@ -21,4 +21,29 @@ class GradesController extends Controller
             'status' => $this->status
         ]);
     }
+
+    public function show($studentId, $subjectId) {
+        $grades = Grades::where('student_id', $studentId)->where('subject_id', $subjectId)->first();
+        $data = New GradesResource($grades);
+        return response($data, $this->status);
+    }
+
+    public function update(Request $request) {
+        Grades::where(['id' => $request->id])->update([
+            'student_id' => $request->studentId,
+            'subject_id' => $request->subjectId,
+            'teacher_id' => $request->teacherId,
+            'prelim' => $request->prelim,
+            'midterm' => $request->midterm,
+            'endterm' => $request->endterm,
+            'final_grade' => $request->finalGrade,
+            'student_status' => $request->studentStatus,
+            'absent' => $request->absent,
+        ]);
+        $response = [
+            'message' => 'Grade Information Saved',
+            'status' => $this->status
+        ];
+        return response($response, $this->status);
+    }
 }
