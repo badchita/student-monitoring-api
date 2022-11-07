@@ -22,8 +22,8 @@ class GradesController extends Controller
         ]);
     }
 
-    public function show($studentId, $subjectId) {
-        $grades = Grades::where('student_id', $studentId)->where('subject_id', $subjectId)->first();
+    public function show($id) {
+        $grades = Grades::where('id', $id)->first();
         $data = New GradesResource($grades);
         return response($data, $this->status);
     }

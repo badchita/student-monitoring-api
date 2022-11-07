@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\SubjectsResource;
 use App\Models\Grades;
 use App\Models\Subjects;
+use App\Models\Teachers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -79,6 +80,9 @@ class SubjectsController extends Controller
 
     public function assignTeacher(Request $request) {
         Subjects::where(['id' => $request->id])->update([
+            'teacher_id' => $request->teacherId,
+        ]);
+        Grades::where(['subject_id' => $request->id])->update([
             'teacher_id' => $request->teacherId,
         ]);
         $response = [

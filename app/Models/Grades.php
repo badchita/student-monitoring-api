@@ -26,4 +26,9 @@ class Grades extends Model
     {
         return $this->belongsTo(Students::class, 'id');
     }
+
+    // public function student()
+    // {
+    //     return $this->hasMany(Students::class, 'id');
+    // }
 }
