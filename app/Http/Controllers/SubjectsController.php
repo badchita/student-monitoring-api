@@ -29,7 +29,7 @@ class SubjectsController extends Controller
                         ->get();
         }
         return response([
-            'data' => SubjectsResource::collection($subjects),
+            'data' => SubjectsResource::collection($subjects->loadMissing('grades')),
             'status' => $this->status
         ]);
     }

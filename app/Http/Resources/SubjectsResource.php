@@ -22,6 +22,7 @@ class SubjectsResource extends JsonResource
             'studentId' => $this->student_id,
             'units' => $this->units,
             'schedule' => $this->schedule,
+            'grades' => GradesResource::collection($this->whenLoaded('grades'))
         ];
     }
 }
