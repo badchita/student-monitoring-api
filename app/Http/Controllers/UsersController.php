@@ -6,6 +6,7 @@ use App\Http\Resources\UsersResource;
 use App\Models\Addresses;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -55,6 +56,31 @@ class UsersController extends Controller
             'message' => 'User Information Saved',
             'status' => $this->status
         ];
+        return response($response, $this->status);
+    }
+
+    public function updatePassword(Request $request) {
+        $currentPassword = User::select('password')->where('id', $request->id)->first();
+        $oldPassword = $request->oldPassword;
+        $current = $currentPassword->password;
+        $newPassword = $request->newPassword;
+        if (Hash::check($oldPassword, $currentPassword->password) ) {
+            User::where(['id' => $request->id])->update([
+                'password' => Hash::make($newPassword),
+            ]);
+            $response = [
+                'message' => 'Password the same',
+                'current' => $current,
+                'oldPassword' => $oldPassword,
+                'status' => $this->status
+            ];
+        } else {
+            $this->status = 400;
+            $response = [
+                'message' => 'Current password does not match',
+                'status' => $this->status
+            ];
+        }
         return response($response, $this->status);
     }
 }
