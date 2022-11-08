@@ -20,7 +20,7 @@ return new class extends Migration
         });
 
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_email_verified')->default(0);
+            $table->integer('is_email_verified')->default(0);
         });
     }
 
