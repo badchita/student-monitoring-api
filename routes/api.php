@@ -25,6 +25,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['middleware' => ['cors', 'json.response']], function () {
     Route::post('teacher/login', [ApiAuthController::class, 'loginTeacher'])->name('auth.loginTeacher');
     Route::post('admin/login', [ApiAuthController::class, 'loginAdmin'])->name('auth.loginAdmin');
+    Route::post('parent/login', [ApiAuthController::class, 'loginParent'])->name('auth.loginParent');
     Route::post('/register',[ApiAuthController::class, 'register'])->name('register');
     Route::get('generatePassword', [ApiAuthController::class, 'generatePassword'])->name('auth.generatePassword');
     Route::post('updatePassword', [ApiAuthController::class, 'updatePasswordByAdmin'])->name('auth.updatePasswordByAdmin');

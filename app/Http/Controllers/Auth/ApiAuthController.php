@@ -37,47 +37,62 @@ class ApiAuthController
         // {
         //     return response(['errors'=>$validator->errors()->all()], 405);
         // }
+        $validator = Validator::make($request->all(), [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+            'mobile' => 'required|string|unique:users',
+            'user_type' => 'string|max:255',
+            'date_of_joined' => 'string|max:255',
+            // 'date_of_birth' => 'string|max:255',
+            'age' => 'integer',
+        ]);
+        if ($validator->fails()) {
+            return response(['errors'=>$validator->errors()->all()], 405);
+        }
         if ($request->user_type == 'teacher') {
-            $validator = Validator::make($request->all(), [
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
-                'username' => 'required|string|max:255|unique:users',
-                'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:8',
-                'mobile' => 'required|string|unique:users',
-                'user_type' => 'string|max:255',
-                'date_of_joined' => 'string|max:255',
-                'date_of_birth' => 'string|max:255',
-                'age' => 'integer',
+            $teachers = new Teachers();
+            $teachers->save();
+            $request['password']=Hash::make($request['password']);
+            $request['remember_token'] = Str::random(10);
+            $request->request->add(['teacher_id' => $teachers->id]);
+            $user = User::create($request->toArray());
+            $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+            UserVerify::create([
+                'user_id' => $user->id,
+                'token'   => $token
             ]);
-
-            if ($validator->fails()) {
-                return response(['errors'=>$validator->errors()->all()], 405);
-            } else {
-                $teachers = new Teachers();
-                $teachers->save();
-                $request['password']=Hash::make($request['password']);
-                $request['remember_token'] = Str::random(10);
-                $request->request->add(['teacher_id' => $teachers->id]);
-                $user = User::create($request->toArray());
-                $token = $user->createToken('Laravel Password Grant Client')->accessToken;
-                UserVerify::create([
-                    'user_id' => $user->id,
-                    'token'   => $token
-                ]);
-                Mail::send('email.emailVerificationEmail', ['token' => $token], function($message) use($request){
-                    $message->to($request->email);
-                    $message->subject('Email Verification Mail');
-                });
-                // $response = ['token' => $token];
-                $response = [
-                    'message' => 'Teacher Added!',
-                    'status' => $this->status
-                ];
-                return response($response, $this->status);
-            }
+            Mail::send('email.emailVerificationEmail', ['token' => $token], function($message) use($request){
+                $message->to($request->email);
+                $message->subject('Email Verification Mail');
+            });
+            // $response = ['token' => $token];
+            $response = [
+                'message' => 'Teacher Added!',
+                'status' => $this->status
+            ];
+            return response($response, $this->status);
         } else {
-            return response(['errors'=> 'error'], 405);
+            $request['password']=Hash::make($request['password']);
+            $request['remember_token'] = Str::random(10);
+            $user = User::create($request->toArray());
+            $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+            UserVerify::create([
+                'user_id' => $user->id,
+                'token'   => $token
+            ]);
+            Mail::send('email.emailVerificationEmail', ['token' => $token], function($message) use($request){
+                $message->to($request->email);
+                $message->subject('Email Verification Mail');
+            });
+            // $response = ['token' => $token];
+            $response = [
+                'message' => 'Teacher Added!',
+                'status' => $this->status
+            ];
+            return response($response, $this->status);
         }
     }
 
@@ -123,6 +138,41 @@ class ApiAuthController
         $user = User::where('email', $request->email)->orwhere('username', $request->username)->first();
         if ($user) {
             if ($user->user_type !== 'teacher') {
+                $response = ["message" => "This Account does not have access to this site. Please Login as Teacher"];
+                return response($response, 403);
+            }
+            if (Hash::check($request->password, $user->password)) {
+                $is_email_verified = $user->is_email_verified;
+                if ($is_email_verified == 0) {
+                    $response = ["message" => "Email Not Verified!"];
+                    return response($response, 402);
+                } else {
+                    $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+                    $response = [
+                        'remember_token' => $user->remember_token,
+                        'token'          => $token,
+                        'id'             => $user->id,
+                        'status' => 200
+                    ];
+                return response($response, 200);
+                }
+            } else {
+                $response = ["message" => "Password mismatch"];
+                return response($response, 422);
+            }
+        } else {
+            $response = ["message" =>'User does not exist'];
+            return response($response, 422);
+        }
+    }
+
+    public function loginParent(Request $request) {
+        if ($request->email == '') {
+            $user = User::where('email', $request->email)->first();
+        }
+        $user = User::where('email', $request->email)->orwhere('username', $request->username)->first();
+        if ($user) {
+            if ($user->user_type !== 'parent') {
                 $response = ["message" => "This Account does not have access to this site. Please Login as Teacher"];
                 return response($response, 403);
             }
