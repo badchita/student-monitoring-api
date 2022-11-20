@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\ApiAuthController;
 use App\Http\Controllers\CountriesController;
 use App\Http\Controllers\GradesController;
+use App\Http\Controllers\ParentsController;
 use App\Http\Controllers\ProvincesController;
 use App\Http\Controllers\StudentsController;
 use App\Http\Controllers\SubjectsController;
@@ -73,3 +74,8 @@ Route::put('/grade/detail/update',[GradesController::class, 'update'])->name('gr
 
 Route::get('/countries',[CountriesController::class, 'getAllCountries'])->name('getAllCountries');
 Route::get('/provinces',[ProvincesController::class, 'getAllProvinces'])->name('getAllProvinces');
+
+Route::post('/parent/detail/save',[ParentsController::class, 'store'])->name('parent.store');
+Route::get('/parent/list',[ParentsController::class, 'list'])->name('parent.ist');
+Route::get('/parent/detail/{id}',[ParentsController::class, 'show'])->name('parent.show');
+Route::post('/parent/detail/assign/students',[ParentsController::class, 'assignStudents'])->name('parent.assignStudents');

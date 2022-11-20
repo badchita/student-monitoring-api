@@ -44,6 +44,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'teacher_id',
         'is_email_verified',
         'gender',
+        'parent_id',
     ];
 
     public function addresses()  {
@@ -52,6 +53,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function teachers() {
         return $this->hasMany(Teachers::class, 'id');
+    }
+
+    public function students()
+    {
+        return $this->hasMany(Students::class, 'parent_id');
     }
 
     public function sendPasswordResetNotification($token)

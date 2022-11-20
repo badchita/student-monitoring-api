@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\TeachersController;
 use App\Models\Addresses;
+use App\Models\Parents;
 use App\Models\Teachers;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -75,8 +76,11 @@ class ApiAuthController
             ];
             return response($response, $this->status);
         } else {
+            $parents = new Parents();
+            $parents->save();
             $request['password']=Hash::make($request['password']);
             $request['remember_token'] = Str::random(10);
+            $request->request->add(['parent_id' => $parents->id]);
             $user = User::create($request->toArray());
             $token = $user->createToken('Laravel Password Grant Client')->accessToken;
             UserVerify::create([

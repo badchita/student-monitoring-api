@@ -14,7 +14,7 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        $data = New UsersResource($user);
+        $data = New UsersResource($user->loadMissing('students'));
         return response($data, $this->status);
     }
 
