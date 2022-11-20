@@ -49,9 +49,6 @@ class ParentsController extends Controller
         if ($validator->fails()) {
             return response(['errors'=>$validator->errors()->all()], 405);
         } else {
-            $parents = new Parents();
-            $parents->save();
-
             $users = new User();
             $users->first_name = $request->userDetails['firstName'];
             $users->last_name = $request->userDetails['lastName'];
@@ -63,8 +60,11 @@ class ParentsController extends Controller
             $users->gender = $request->userDetails['gender'];
             $users->status = 'V';
             $users->user_type = 'parent';
-            $users->parent_id = $parents->id;
             $users->save();
+
+            $parents = new Parents();
+            $parents->user_id = $users->id;
+            $parents->save();
 
             $addresses = new Addresses();
             $addresses->house_no = $request->addressDetails['houseNo'];
@@ -77,13 +77,10 @@ class ParentsController extends Controller
 
             User::where(['id' => $users->id])->update([
                 'address_id' => $addresses->id,
+                'parent_id' => $parents->id,
             ]);
 
             Addresses::where(['id' => $addresses->id])->update([
-                'user_id' => $users->id,
-            ]);
-
-            Parents::where(['id' => $users->parent_id])->update([
                 'user_id' => $users->id,
             ]);
 
