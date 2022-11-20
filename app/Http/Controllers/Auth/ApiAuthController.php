@@ -76,13 +76,17 @@ class ApiAuthController
             ];
             return response($response, $this->status);
         } else {
-            $parents = new Parents();
-            $parents->save();
             $request['password']=Hash::make($request['password']);
             $request['remember_token'] = Str::random(10);
-            $request->request->add(['parent_id' => $parents->id]);
+            // $request->request->add(['parent_id' => $parents->id]);
             $user = User::create($request->toArray());
+            $parents = new Parents();
+            $parents->user_id = $user->id;
+            $parents->save();
             $token = $user->createToken('Laravel Password Grant Client')->accessToken;
+            User::where(['id' => $user->id])->update([
+                'parent_id' => $parents->id,
+            ]);
             UserVerify::create([
                 'user_id' => $user->id,
                 'token'   => $token
