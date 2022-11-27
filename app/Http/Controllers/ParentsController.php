@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ParentsResources;
+use App\Http\Resources\StudentsResource;
 use App\Models\Addresses;
 use App\Models\Parents;
 use App\Models\Students;
@@ -92,6 +93,53 @@ class ParentsController extends Controller
         }
     }
 
+    public function update(Request $request) {
+        Parents::where(['id' => $request->id])->update([
+
+        ]);
+
+        if ($request->addressDetails['id']) {
+            Addresses::where(['user_id' => $request->userDetails['id']])->update([
+                'house_no' => $request->addressDetails['houseNo'],
+                'barangay' => $request->addressDetails['barangay'],
+                'country' => $request->addressDetails['country'],
+                'province' => $request->addressDetails['province'],
+                'zip_code' => $request->addressDetails['zipCode'],
+            ]);
+        } else {
+            $addresses = new Addresses();
+            $addresses->house_no = $request->addressDetails['houseNo'];
+            $addresses->barangay = $request->addressDetails['barangay'];
+            $addresses->country = json_encode($request->addressDetails['country']);
+            $addresses->province = json_encode($request->addressDetails['province']);
+            $addresses->city = $request->addressDetails['city'];
+            $addresses->zip_code = $request->addressDetails['zipCode'];
+            $addresses->save();
+            User::where(['parent_id' => $request->id])->update([
+                'address_id' => $addresses->id,
+            ]);
+            Addresses::where(['id' => $addresses->id])->update([
+                'user_id' => $request->userDetails['id'],
+            ]);
+        }
+
+        User::where(['parent_id' => $request->id])->update([
+            'first_name' => $request->userDetails['firstName'],
+            'last_name' => $request->userDetails['lastName'],
+            'email' => $request->userDetails['email'],
+            'mobile' => $request->userDetails['mobile'],
+            'date_of_birth' => $request->userDetails['dateOfBirth'],
+            'age' => $request->userDetails['age'],
+            'gender' => $request->userDetails['gender'],
+        ]);
+
+        $response = [
+            'message' => 'Parent Information Saved',
+            'status' => $this->status
+        ];
+        return response($response, $this->status);
+    }
+
     public function assignStudents(Request $request) {
         foreach ($request->children as $key) {
             Students::where(['id' => $key['studentId']])->update([
@@ -103,5 +151,16 @@ class ParentsController extends Controller
             'status' => $this->status
         ];
         return response($response, $this->status);
+    }
+
+    public function childList(Request $request) {
+        $students = Students::select('*')
+                    ->where('parent_id', $request->id)
+                    ->orderBy("created_at", "DESC")
+                    ->get();
+        return response([
+            'data' => StudentsResource::collection($students->loadMissing('grades')),
+            'status' => $this->status
+        ]);
     }
 }

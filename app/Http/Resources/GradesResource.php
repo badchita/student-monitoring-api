@@ -5,6 +5,7 @@ namespace App\Http\Resources;
 use App\Models\Addresses;
 use App\Models\Students;
 use App\Models\Subjects;
+use App\Models\Teachers;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -66,6 +67,32 @@ class GradesResource extends JsonResource
                 'teacher_id as teacherId',
                 'address_id as addressId',
                 'gender'
+            ])->first(),
+            'userTeacherDetails' => User::where(['teacher_id' => $this->teacher_id])->get([
+                'id',
+                'first_name as firstName',
+                'last_name as lastName',
+                'email',
+                'email_verified_at as emailVerifiedAt',
+                'username',
+                'password',
+                'user_type as userType',
+                'date_of_birth as dateOfBirth',
+                'date_of_joined as dateOfJoined',
+                'address_id as addressId',
+                'status',
+                'status_verification as statusVerification',
+                'children_id as childrenId',
+                'mobile',
+                'age',
+                'teacher_id as teacherId',
+                'address_id as addressId',
+                'gender'
+            ])->first(),
+            'teacherDetails' => Teachers::where(['id' => $this->teacher_id])->get([
+                'id',
+                'date_hired as dateHired',
+                'id_number as idNumber',
             ])->first(),
             'addressDetails' => Addresses::where(['user_id' => $this->student_id])->get([
                 'id',

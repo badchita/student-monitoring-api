@@ -76,6 +76,8 @@ Route::get('/countries',[CountriesController::class, 'getAllCountries'])->name('
 Route::get('/provinces',[ProvincesController::class, 'getAllProvinces'])->name('getAllProvinces');
 
 Route::post('/parent/detail/save',[ParentsController::class, 'store'])->name('parent.store');
+Route::put('/parent/detail/update',[ParentsController::class, 'update'])->name('user.update');
 Route::get('/parent/list',[ParentsController::class, 'list'])->name('parent.ist');
 Route::get('/parent/detail/{id}',[ParentsController::class, 'show'])->name('parent.show');
 Route::post('/parent/detail/assign/students',[ParentsController::class, 'assignStudents'])->name('parent.assignStudents');
+Route::get('/parent/childList',[ParentsController::class, 'childList'])->name('parent.childList');
