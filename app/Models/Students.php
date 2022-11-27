@@ -9,6 +9,7 @@ class Students extends Model
 {
     use HasFactory;
     public $keyType = 'string';
+
     protected $fillable = [
         'id',
         'course',

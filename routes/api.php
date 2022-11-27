@@ -6,6 +6,8 @@ use App\Http\Controllers\GradesController;
 use App\Http\Controllers\ParentsController;
 use App\Http\Controllers\ProvincesController;
 use App\Http\Controllers\StudentsController;
+use App\Http\Controllers\StudentsMedicals;
+use App\Http\Controllers\StudentsMedicalsController;
 use App\Http\Controllers\SubjectsController;
 use App\Http\Controllers\TeachersController;
 use App\Http\Controllers\UsersController;
@@ -81,3 +83,6 @@ Route::get('/parent/list',[ParentsController::class, 'list'])->name('parent.ist'
 Route::get('/parent/detail/{id}',[ParentsController::class, 'show'])->name('parent.show');
 Route::post('/parent/detail/assign/students',[ParentsController::class, 'assignStudents'])->name('parent.assignStudents');
 Route::get('/parent/childList',[ParentsController::class, 'childList'])->name('parent.childList');
+
+Route::post('/student/medical/upload',[StudentsMedicalsController::class, 'upload'])->name('parent.upload');
+Route::post('/student/medical/save',[StudentsMedicalsController::class, 'store'])->name('parent.store');
