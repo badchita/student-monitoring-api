@@ -16,6 +16,7 @@ class StudentsMedicals extends Model
         'parent_id',
         'children_id',
         'teacher_id',
+        'subject_id',
         'note',
         'status',
         'medical_number',

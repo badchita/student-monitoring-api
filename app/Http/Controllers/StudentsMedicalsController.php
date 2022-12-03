@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\StudentsMedicalsResources;
 use App\Models\StudentsMedicals;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -12,12 +13,13 @@ class StudentsMedicalsController extends Controller
     private $status = 200;
 
     public function list(Request $request) {
-        // $parentId = $request->parentId;
-
-        // if ($parentId) {
-        //     $studentsMedicals = StudentsMedicals::select('*')
-        //                         ->wher('p')
-        // }
+        $studentsMedicals = StudentsMedicals::select('*')
+                            ->orderBy("created_at", "DESC")
+                            ->get();
+        return response([
+            'data' => StudentsMedicalsResources::collection($studentsMedicals),
+            'status' => $this->status
+        ]);
     }
 
     public function store(Request $request) {
@@ -31,6 +33,7 @@ class StudentsMedicalsController extends Controller
         $studentsMedicals->parent_id = $request->parentId;
         $studentsMedicals->teacher_id = $request->teacherId;
         $studentsMedicals->children_id = $request->studentId;
+        $studentsMedicals->subject_id = $request->subjectId;
         $studentsMedicals->note = $request->note;
         $studentsMedicals->status = 'P';
         $studentsMedicals->medical_number = $medicalNumber;
@@ -39,7 +42,8 @@ class StudentsMedicalsController extends Controller
 
         $response = [
             'message' => 'Medical Saved',
-            'status' => $this->status
+            'status' => $this->status,
+            'parentId' => $request->parentId
         ];
         return response($response, $this->status);
     }
