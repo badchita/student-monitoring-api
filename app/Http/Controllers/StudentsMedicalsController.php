@@ -48,6 +48,12 @@ class StudentsMedicalsController extends Controller
         return response($response, $this->status);
     }
 
+    public function show($id) {
+        $studentsMedicals = StudentsMedicals::find($id);
+        $data = New StudentsMedicalsResources($studentsMedicals);
+        return response($data, $this->status);
+    }
+
     public function upload(Request $request)
     {
         $startOfYear = Carbon::now()->startOfYear();

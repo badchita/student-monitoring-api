@@ -84,6 +84,7 @@ Route::get('/parent/detail/{id}',[ParentsController::class, 'show'])->name('pare
 Route::post('/parent/detail/assign/students',[ParentsController::class, 'assignStudents'])->name('parent.assignStudents');
 Route::get('/parent/childList',[ParentsController::class, 'childList'])->name('parent.childList');
 
-Route::get('/student/medical/list',[StudentsMedicalsController::class, 'list'])->name('studentMedicals.ist');
+Route::get('/student/medical/list',[StudentsMedicalsController::class, 'list'])->name('studentMedicals.list');
+Route::get('/student/medical/detail/{id}',[StudentsMedicalsController::class, 'show'])->name('studentMedicals.show');
 Route::post('/student/medical/upload',[StudentsMedicalsController::class, 'upload'])->name('studentMedicals.upload');
 Route::post('/student/medical/save',[StudentsMedicalsController::class, 'store'])->name('studentMedicals.store');
