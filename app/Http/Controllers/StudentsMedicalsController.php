@@ -60,10 +60,12 @@ class StudentsMedicalsController extends Controller
         $endOfYear = Carbon::now()->endOfYear();
         $medicals = StudentsMedicals::where('created_at', '>' , $startOfYear)->where('created_at', '<', $endOfYear)->get();
         $count = count($medicals) + 1;
-        $fileName = $count.'_'.$request->file->getClientOriginalName();
+        $name = $request->file->getClientOriginalName();
+        $name = str_replace(' ', '_', $name);
+        $fileName = $count.'_'.$name;
         // $request->file('file')->move(public_path() . '/uploads/medicals', $fileName, 'public');
         // $request->file('file')->move(public_path('storage/uploads/medicals'), $fileName);
-        $request->file('file')->move('storage/uploads/medicals', $fileName, 'public');
+        $request->file('file')->move('storage/uploads/medicals', $fileName);
         $this->fileName = $fileName;
 
         $response = [
