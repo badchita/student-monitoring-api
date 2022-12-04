@@ -65,9 +65,9 @@ class StudentsMedicalsController extends Controller
         $name = $request->file->getClientOriginalName();
         $name = str_replace(' ', '_', $name);
         $fileName = $count.'_'.$name;
-        $request->file('file')->store('/uploads/medicals', $fileName);
+        // $request->file('file')->store('/uploads/medicals', $fileName);
         // $request->file('file')->move(public_path('storage/uploads/medicals'), $fileName);
-        // $request->file('file')->storeAs('uploads/medicals', $fileName);
+        $request->file('file')->storeAs('uploads/medicals', $fileName, 'public');
         $this->fileName = $fileName;
 
         $response = [
