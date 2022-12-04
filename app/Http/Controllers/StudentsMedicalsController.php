@@ -28,7 +28,7 @@ class StudentsMedicalsController extends Controller
         $medicals = StudentsMedicals::where('created_at', '>' , $startOfYear)->where('created_at', '<', $endOfYear)->get();
         $count = count($medicals) + 1;
         $medicalNumber = 'M'.Carbon::now()->toDateString().'-'.$count;
-        $imageName = $request->file->getClientOriginalName();
+        $imageName = $request->image;
         $imageName = str_replace(' ', '_', $imageName);
 
         $studentsMedicals = new StudentsMedicals();
