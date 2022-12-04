@@ -28,6 +28,8 @@ class StudentsMedicalsController extends Controller
         $medicals = StudentsMedicals::where('created_at', '>' , $startOfYear)->where('created_at', '<', $endOfYear)->get();
         $count = count($medicals) + 1;
         $medicalNumber = 'M'.Carbon::now()->toDateString().'-'.$count;
+        $imageName = $request->file->getClientOriginalName();
+        $imageName = str_replace(' ', '_', $imageName);
 
         $studentsMedicals = new StudentsMedicals();
         $studentsMedicals->parent_id = $request->parentId;
@@ -37,7 +39,7 @@ class StudentsMedicalsController extends Controller
         $studentsMedicals->note = $request->note;
         $studentsMedicals->status = 'P';
         $studentsMedicals->medical_number = $medicalNumber;
-        $studentsMedicals->image = $count.'_'.$request->image;
+        $studentsMedicals->image = $count.'_'.$imageName;
         $studentsMedicals->save();
 
         $response = [
