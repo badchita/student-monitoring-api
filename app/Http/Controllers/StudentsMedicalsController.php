@@ -62,7 +62,8 @@ class StudentsMedicalsController extends Controller
         $count = count($medicals) + 1;
         $fileName = $count.'_'.$request->file->getClientOriginalName();
         // $request->file('file')->move(public_path() . '/uploads/medicals', $fileName, 'public');
-        $request->file('file')->move(public_path('storage/uploads/medicals'), $fileName);
+        // $request->file('file')->move(public_path('storage/uploads/medicals'), $fileName);
+        $request->file('file')->move('storage/uploads/medicals', $fileName, 'public');
         $this->fileName = $fileName;
 
         $response = [
