@@ -50,6 +50,7 @@ class UsersController extends Controller
             Addresses::where(['id' => $addresses->id])->update([
                 'user_id' => $request->id,
             ]);
+            //test
         }
 
         $response = [
